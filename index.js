@@ -15117,10 +15117,10 @@ var main = async () => {
     core.info("[INFO] No changes to the repo detected, exiting");
     return;
   }
-  if (skipCommit) {
+  if (!skipCommit) {
     (0, import_exec.exec)("git", ["commit", "-m", "Repo visualizer: updated diagram"]);
   }
-  if (skipPush) {
+  if (!skipPush) {
     await (0, import_exec.exec)("git", ["push"]);
   }
   console.log("All set!");
