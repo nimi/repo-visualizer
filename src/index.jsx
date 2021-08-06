@@ -9,13 +9,13 @@ import { Tree } from "./Tree.tsx"
 
 const args = process.argv.slice(2)
 
-let outputFile = "./diagram.svg"
+let output = "./diagram.svg"
 let skipPush = true
 let skipCommit = true
 
 switch (args[0]) {
-  case "output":
-    outputFile = args[1]
+  case "outputFile":
+    output = args[1]
     break
   default:
     console.log(`Command ${args[0]} is not valid input.`)
@@ -45,7 +45,7 @@ const main = async () => {
     <Tree data={data} />
   )
 
-  const outputFile = core.getInput("output_file") || "./diagram.svg"
+  const outputFile = core.getInput("output_file") || output
 
   await fs.writeFileSync(outputFile, componentCodeString)
 

@@ -14238,17 +14238,17 @@ function copy(source, target) {
   return target.domain(source.domain()).range(source.range()).interpolate(source.interpolate()).clamp(source.clamp()).unknown(source.unknown());
 }
 function transformer() {
-  var domain = unit, range = unit, interpolate = value_default, transform2, untransform, unknown, clamp = identity2, piecewise, output, input;
+  var domain = unit, range = unit, interpolate = value_default, transform2, untransform, unknown, clamp = identity2, piecewise, output2, input;
   function rescale() {
     var n = Math.min(domain.length, range.length);
     if (clamp !== identity2)
       clamp = clamper(domain[0], domain[n - 1]);
     piecewise = n > 2 ? polymap : bimap;
-    output = input = null;
+    output2 = input = null;
     return scale;
   }
   function scale(x2) {
-    return x2 == null || isNaN(x2 = +x2) ? unknown : (output || (output = piecewise(domain.map(transform2), range, interpolate)))(transform2(clamp(x2)));
+    return x2 == null || isNaN(x2 = +x2) ? unknown : (output2 || (output2 = piecewise(domain.map(transform2), range, interpolate)))(transform2(clamp(x2)));
   }
   scale.invert = function(y2) {
     return clamp(untransform((input || (input = piecewise(range, domain.map(transform2), number_default2)))(y2)));
@@ -15077,12 +15077,12 @@ var getSortOrder = (item, cachedOrders, i = 0) => {
 
 // src/index.jsx
 var args = process.argv.slice(2);
-var outputFile = "./diagram.svg";
+var output = "./diagram.svg";
 var skipPush = true;
 var skipCommit = true;
 switch (args[0]) {
-  case "output":
-    outputFile = args[1];
+  case "outputFile":
+    output = args[1];
     break;
   default:
     console.log(`Command ${args[0]} is not valid input.`);
@@ -15104,13 +15104,13 @@ var main = async () => {
   const componentCodeString = import_server.default.renderToStaticMarkup(/* @__PURE__ */ import_react3.default.createElement(Tree, {
     data
   }));
-  const outputFile2 = core.getInput("output_file") || "./diagram.svg";
-  await import_fs2.default.writeFileSync(outputFile2, componentCodeString);
-  await (0, import_exec.exec)("git", ["add", outputFile2]);
+  const outputFile = core.getInput("output_file") || output;
+  await import_fs2.default.writeFileSync(outputFile, componentCodeString);
+  await (0, import_exec.exec)("git", ["add", outputFile]);
   const diff = await execWithOutput("git", [
     "status",
     "--porcelain",
-    outputFile2
+    outputFile
   ]);
   core.info(`diff: ${diff}`);
   if (!diff) {
