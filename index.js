@@ -548,13 +548,13 @@ var require_toolrunner = __commonJS({
     var timers_1 = require("timers");
     var IS_WINDOWS = process.platform === "win32";
     var ToolRunner = class extends events.EventEmitter {
-      constructor(toolPath, args, options) {
+      constructor(toolPath, args2, options) {
         super();
         if (!toolPath) {
           throw new Error("Parameter 'toolPath' cannot be null or empty.");
         }
         this.toolPath = toolPath;
-        this.args = args || [];
+        this.args = args2 || [];
         this.options = options || {};
       }
       _debug(message) {
@@ -564,28 +564,28 @@ var require_toolrunner = __commonJS({
       }
       _getCommandString(options, noPrefix) {
         const toolPath = this._getSpawnFileName();
-        const args = this._getSpawnArgs(options);
+        const args2 = this._getSpawnArgs(options);
         let cmd = noPrefix ? "" : "[command]";
         if (IS_WINDOWS) {
           if (this._isCmdFile()) {
             cmd += toolPath;
-            for (const a2 of args) {
+            for (const a2 of args2) {
               cmd += ` ${a2}`;
             }
           } else if (options.windowsVerbatimArguments) {
             cmd += `"${toolPath}"`;
-            for (const a2 of args) {
+            for (const a2 of args2) {
               cmd += ` ${a2}`;
             }
           } else {
             cmd += this._windowsQuoteCmdArg(toolPath);
-            for (const a2 of args) {
+            for (const a2 of args2) {
               cmd += ` ${this._windowsQuoteCmdArg(a2)}`;
             }
           }
         } else {
           cmd += toolPath;
-          for (const a2 of args) {
+          for (const a2 of args2) {
             cmd += ` ${a2}`;
           }
         }
@@ -849,7 +849,7 @@ var require_toolrunner = __commonJS({
     };
     exports2.ToolRunner = ToolRunner;
     function argStringToArray(argString) {
-      const args = [];
+      const args2 = [];
       let inQuotes = false;
       let escaped = false;
       let arg = "";
@@ -880,7 +880,7 @@ var require_toolrunner = __commonJS({
         }
         if (c2 === " " && !inQuotes) {
           if (arg.length > 0) {
-            args.push(arg);
+            args2.push(arg);
             arg = "";
           }
           continue;
@@ -888,9 +888,9 @@ var require_toolrunner = __commonJS({
         append(c2);
       }
       if (arg.length > 0) {
-        args.push(arg.trim());
+        args2.push(arg.trim());
       }
-      return args;
+      return args2;
     }
     exports2.argStringToArray = argStringToArray;
     var ExecState = class extends events.EventEmitter {
@@ -1021,20 +1021,20 @@ var require_exec = __commonJS({
     exports2.getExecOutput = exports2.exec = void 0;
     var string_decoder_1 = require("string_decoder");
     var tr = __importStar(require_toolrunner());
-    function exec2(commandLine, args, options) {
+    function exec2(commandLine, args2, options) {
       return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine);
         if (commandArgs.length === 0) {
           throw new Error(`Parameter 'commandLine' cannot be null or empty.`);
         }
         const toolPath = commandArgs[0];
-        args = commandArgs.slice(1).concat(args || []);
-        const runner = new tr.ToolRunner(toolPath, args, options);
+        args2 = commandArgs.slice(1).concat(args2 || []);
+        const runner = new tr.ToolRunner(toolPath, args2, options);
         return runner.exec();
       });
     }
     exports2.exec = exec2;
-    function getExecOutput(commandLine, args, options) {
+    function getExecOutput(commandLine, args2, options) {
       var _a, _b;
       return __awaiter(this, void 0, void 0, function* () {
         let stdout = "";
@@ -1056,7 +1056,7 @@ var require_exec = __commonJS({
           }
         };
         const listeners = Object.assign(Object.assign({}, options === null || options === void 0 ? void 0 : options.listeners), { stdout: stdOutListener, stderr: stdErrListener });
-        const exitCode = yield exec2(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
+        const exitCode = yield exec2(commandLine, args2, Object.assign(Object.assign({}, options), { listeners }));
         stdout += stdoutDecoder.end();
         stderr += stderrDecoder.end();
         return {
@@ -1901,29 +1901,29 @@ var require_react_development = __commonJS({
         }
         function warn(format2) {
           {
-            for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-              args[_key - 1] = arguments[_key];
+            for (var _len = arguments.length, args2 = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+              args2[_key - 1] = arguments[_key];
             }
-            printWarning("warn", format2, args);
+            printWarning("warn", format2, args2);
           }
         }
         function error(format2) {
           {
-            for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-              args[_key2 - 1] = arguments[_key2];
+            for (var _len2 = arguments.length, args2 = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+              args2[_key2 - 1] = arguments[_key2];
             }
-            printWarning("error", format2, args);
+            printWarning("error", format2, args2);
           }
         }
-        function printWarning(level, format2, args) {
+        function printWarning(level, format2, args2) {
           {
             var ReactDebugCurrentFrame2 = ReactSharedInternals.ReactDebugCurrentFrame;
             var stack = ReactDebugCurrentFrame2.getStackAddendum();
             if (stack !== "") {
               format2 += "%s";
-              args = args.concat([stack]);
+              args2 = args2.concat([stack]);
             }
-            var argsWithFormat = args.map(function(item) {
+            var argsWithFormat = args2.map(function(item) {
               return "" + item;
             });
             argsWithFormat.unshift("Warning: " + format2);
@@ -4343,29 +4343,29 @@ var require_react_dom_server_node_development = __commonJS({
         var ReactSharedInternals = React4.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         function warn(format2) {
           {
-            for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-              args[_key - 1] = arguments[_key];
+            for (var _len = arguments.length, args2 = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+              args2[_key - 1] = arguments[_key];
             }
-            printWarning("warn", format2, args);
+            printWarning("warn", format2, args2);
           }
         }
         function error(format2) {
           {
-            for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-              args[_key2 - 1] = arguments[_key2];
+            for (var _len2 = arguments.length, args2 = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+              args2[_key2 - 1] = arguments[_key2];
             }
-            printWarning("error", format2, args);
+            printWarning("error", format2, args2);
           }
         }
-        function printWarning(level, format2, args) {
+        function printWarning(level, format2, args2) {
           {
             var ReactDebugCurrentFrame2 = ReactSharedInternals.ReactDebugCurrentFrame;
             var stack = ReactDebugCurrentFrame2.getStackAddendum();
             if (stack !== "") {
               format2 += "%s";
-              args = args.concat([stack]);
+              args2 = args2.concat([stack]);
             }
-            var argsWithFormat = args.map(function(item) {
+            var argsWithFormat = args2.map(function(item) {
               return "" + item;
             });
             argsWithFormat.unshift("Warning: " + format2);
@@ -9443,11 +9443,11 @@ var require_memoize = __commonJS({
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       var memoized = function() {
-        var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache = memoized.cache;
+        var args2 = arguments, key = resolver ? resolver.apply(this, args2) : args2[0], cache = memoized.cache;
         if (cache.has(key)) {
           return cache.get(key);
         }
-        var result = func.apply(this, args);
+        var result = func.apply(this, args2);
         memoized.cache = cache.set(key, result) || cache;
         return result;
       };
@@ -10376,18 +10376,18 @@ Dispatch.prototype = dispatch.prototype = {
   },
   call: function(type2, that) {
     if ((n = arguments.length - 2) > 0)
-      for (var args = new Array(n), i = 0, n, t; i < n; ++i)
-        args[i] = arguments[i + 2];
+      for (var args2 = new Array(n), i = 0, n, t; i < n; ++i)
+        args2[i] = arguments[i + 2];
     if (!this._.hasOwnProperty(type2))
       throw new Error("unknown type: " + type2);
     for (t = this._[type2], i = 0, n = t.length; i < n; ++i)
-      t[i].value.apply(that, args);
+      t[i].value.apply(that, args2);
   },
-  apply: function(type2, that, args) {
+  apply: function(type2, that, args2) {
     if (!this._.hasOwnProperty(type2))
       throw new Error("unknown type: " + type2);
     for (var t = this._[type2], i = 0, n = t.length; i < n; ++i)
-      t[i].value.apply(that, args);
+      t[i].value.apply(that, args2);
   }
 };
 function get(type2, name) {
@@ -15076,6 +15076,17 @@ var getSortOrder = (item, cachedOrders, i = 0) => {
 };
 
 // src/index.jsx
+var args = process.argv.slice(2);
+var outputFile = "./diagram.svg";
+var skipPush = true;
+var skipCommit = true;
+switch (args[0]) {
+  case "output":
+    outputFile = args[1];
+    break;
+  default:
+    console.log(`Command ${args[0]} is not valid input.`);
+}
 var main = async () => {
   core.info("[INFO] Usage https://github.com/githubocto/repo-visualizer#readme");
   core.startGroup("Configuration");
@@ -15093,24 +15104,32 @@ var main = async () => {
   const componentCodeString = import_server.default.renderToStaticMarkup(/* @__PURE__ */ import_react3.default.createElement(Tree, {
     data
   }));
-  const outputFile = core.getInput("output_file") || "./diagram.svg";
-  await import_fs2.default.writeFileSync(outputFile, componentCodeString);
-  await (0, import_exec.exec)("git", ["add", outputFile]);
-  const diff = await execWithOutput("git", ["status", "--porcelain", outputFile]);
+  const outputFile2 = core.getInput("output_file") || "./diagram.svg";
+  await import_fs2.default.writeFileSync(outputFile2, componentCodeString);
+  await (0, import_exec.exec)("git", ["add", outputFile2]);
+  const diff = await execWithOutput("git", [
+    "status",
+    "--porcelain",
+    outputFile2
+  ]);
   core.info(`diff: ${diff}`);
   if (!diff) {
     core.info("[INFO] No changes to the repo detected, exiting");
     return;
   }
-  (0, import_exec.exec)("git", ["commit", "-m", "Repo visualizer: updated diagram"]);
-  await (0, import_exec.exec)("git", ["push"]);
+  if (skipCommit) {
+    (0, import_exec.exec)("git", ["commit", "-m", "Repo visualizer: updated diagram"]);
+  }
+  if (skipPush) {
+    await (0, import_exec.exec)("git", ["push"]);
+  }
   console.log("All set!");
 };
 main();
-function execWithOutput(command, args) {
+function execWithOutput(command, args2) {
   return new Promise((resolve, reject) => {
     try {
-      (0, import_exec.exec)(command, args, {
+      (0, import_exec.exec)(command, args2, {
         listeners: {
           stdout: function(res) {
             core.info(res.toString());
